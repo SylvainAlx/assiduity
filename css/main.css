@@ -1,0 +1,240 @@
+/* css/main.css - Thème et Variables Principales (Style Football Moderne) */
+
+:root {
+  /* Palette de couleurs Principales (Ambiance Stade / Thème Nuit) */
+  --bg-primary: #0A0F1D;
+  --bg-card: #141B2D;
+  --bg-card-hover: #1D263B;
+  --bg-input: #1E293B;
+  
+  /* Accents Visuels Sportifs */
+  --accent-green: #00E676;       /* Présent / Succès (+3 pts) */
+  --accent-yellow: #FFC107;      /* Retard / Attention (+1 pt) */
+  --accent-red: #FF5252;         /* Absent / Défaite (0 pt) */
+  --accent-gold: #FFD700;        /* Trophée / 1er Place */
+  --accent-silver: #C0C0C0;      /* 2e Place */
+  --accent-bronze: #CD7F32;      /* 3e Place */
+  --accent-blue: #3A86EF;        /* Actions / Boutons primaires */
+
+  /* Typographie & Couleurs de Texte */
+  --font-primary: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  --text-main: #F8FAFC;
+  --text-muted: #94A3B8;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-radius: 12px;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Reinitialisation Basique */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(0, 230, 118, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(58, 134, 239, 0.05) 0%, transparent 50%);
+}
+
+/* En-tête Principal */
+.app-header {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 2rem;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-badge {
+  font-size: 2.2rem;
+  background: linear-gradient(135deg, rgba(0,230,118,0.2), rgba(58,134,239,0.2));
+  border: 1px solid var(--accent-green);
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(0,230,118,0.2);
+}
+
+.brand h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #FFFFFF, var(--text-muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: var(--accent-green);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Barre de Statistiques Globales */
+.stats-bar {
+  background: rgba(20, 27, 45, 0.6);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.75rem 2rem;
+  backdrop-filter: blur(10px);
+}
+
+.stats-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.6rem 1rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+}
+
+.stat-value {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  display: block;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* Navigation par Onglets */
+.app-nav {
+  background: var(--bg-primary);
+  padding: 0.75rem 2rem 0;
+  border-bottom: 1px solid var(--border-color);
+  sticky: top 0;
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.nav-btn:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.nav-btn.active {
+  color: var(--accent-green);
+  background: var(--bg-card);
+  border-bottom-color: var(--accent-green);
+}
+
+/* Conteneur de Contenu */
+.main-content {
+  max-width: 1200px;
+  margin: 1.5rem auto;
+  padding: 0 1.5rem;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Boutons Utilitaires Standard */
+.btn {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-primary { background: var(--accent-blue); color: white; }
+.btn-primary:hover { filter: brightness(1.15); transform: translateY(-1px); }
+
+.btn-accent { background: var(--accent-green); color: #052010; }
+.btn-accent:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+.btn-secondary { background: rgba(255, 255, 255, 0.1); color: var(--text-main); }
+.btn-secondary:hover { background: rgba(255, 255, 255, 0.18); }
+
+.btn-warning { background: var(--accent-yellow); color: #2D2000; }
+.btn-danger { background: var(--accent-red); color: white; }
+.btn-large { padding: 0.85rem 1.75rem; font-size: 1rem; }

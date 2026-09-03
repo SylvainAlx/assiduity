@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ligue d'Assiduité 🏆 - Championnat des Élèves</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/league.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- En-tête principal -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="logo-badge">⚽</div>
+        <div>
+          <h1 id="header-league-title">Ligue d'Assiduité</h1>
+          <p class="subtitle" id="header-coach-name">Coach Enseignant</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btn-open-settings" class="btn btn-secondary"><span class="btn-icon">⚙️</span> Configurer Ligue</button>
+        <button id="btn-quick-rollcall" class="btn btn-accent"><span class="btn-icon">📋</span> Faire l'Appel</button>
+        <button id="btn-quick-add-student" class="btn btn-secondary"><span class="btn-icon">➕</span> Élève</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Bannière de Statistiques -->
+  <section class="stats-bar">
+    <div class="stats-container">
+      <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-data"><span class="stat-value" id="stat-total-students">0</span><span class="stat-label">Élèves engagés</span></div></div>
+      <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-data"><span class="stat-value" id="stat-attendance-rate">0%</span><span class="stat-label">Taux de présence</span></div></div>
+      <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-data"><span class="stat-value" id="stat-total-points">0</span><span class="stat-label">Points attribués</span></div></div>
+      <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-data"><span class="stat-value" id="stat-total-sessions">0</span><span class="stat-label">Séances jouées</span></div></div>
+    </div>
+  </section>
+
+  <!-- Navigation par Onglets -->
+  <nav class="app-nav">
+    <div class="nav-container">
+      <button class="nav-btn active" data-tab="leaderboard"><span class="nav-icon">🏆</span> Classement Général</button>
+      <button class="nav-btn" data-tab="rollcall"><span class="nav-icon">📋</span> Faire l'Appel</button>
+      <button class="nav-btn" data-tab="students"><span class="nav-icon">👤</span> Effectif Élèves</button>
+      <button class="nav-btn" data-tab="history"><span class="nav-icon">📜</span> Historique</button>
+      <button class="nav-btn" data-tab="backup"><span class="nav-icon">💾</span> Sauvegarde / Config</button>
+    </div>
+  </nav>
+
+  <!-- Contenu Principal -->
+  <main class="main-content">
+    
+    <!-- Onglet 1 : Classement Général -->
+    <section id="tab-leaderboard" class="tab-panel active">
+      <div class="section-header">
+        <div>
+          <h2>🏆 Tableau d'Honneur du Championnat</h2>
+          <p>Classement en direct selon le barème d'assiduité</p>
+        </div>
+        <div class="league-legend">
+          <span class="legend-item legend-champions">🥇 Champions (1er-3e)</span>
+          <span class="legend-item legend-europa">🥈 Europa (4e-6e)</span>
+          <span class="legend-item legend-maintenance">⚠️ Zone Relance (&lt;10 pts)</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="league-table">
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th>Élève / Joueur</th>
+              <th>Poste / Maillot</th>
+              <th>Séances</th>
+              <th>🟢 Prés.</th>
+              <th>🟡 Ret.</th>
+              <th>🔴 Abs.</th>
+              <th>Forme</th>
+              <th>Points</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Onglet 2 : Faire l'Appel -->
+    <section id="tab-rollcall" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h2>📋 Feuille de Match / Faire l'Appel</h2>
+          <p>Validez l'assiduité de la séance actuelle en 1 clic par élève</p>
+        </div>
+        <div class="rollcall-meta">
+          <label for="rollcall-date">Date de la séance :</label>
+          <input type="date" id="rollcall-date" class="input-date">
+        </div>
+      </div>
+      <div id="rollcall-grid" class="rollcall-grid"></div>
+      <div class="rollcall-footer">
+        <button id="btn-submit-rollcall" class="btn btn-primary btn-large">💾 Enregistrer la séance d'appel</button>
+      </div>
+    </section>
+
+    <!-- Onglet 3 : Gestion de l'Effectif -->
+    <section id="tab-students" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h2>👤 Gestion de l'Effectif Élèves</h2>
+          <p>Ajoutez, modifiez ou ajustez précisément les points de chaque élève</p>
+        </div>
+        <button id="btn-add-student-modal" class="btn btn-primary">➕ Ajouter un élève</button>
+      </div>
+      <div id="students-grid" class="students-grid"></div>
+    </section>
+
+    <!-- Onglet 4 : Historique des Points -->
+    <section id="tab-history" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h2>📜 Historique Chronologique & Datation</h2>
+          <p>Journal complet de tous les évènements d'assiduité et ajustements manuels</p>
+        </div>
+        <div class="history-filter">
+          <select id="filter-history-student" class="input-select">
+            <option value="all">Tous les élèves</option>
+          </select>
+        </div>
+      </div>
+      <div id="history-timeline" class="history-timeline"></div>
+    </section>
+
+    <!-- Onglet 5 : Sauvegarde & Import/Export -->
+    <section id="tab-backup" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h2>💾 Gestion de la Sauvegarde & Personnalisation</h2>
+          <p>Exporter vers un fichier JSON, importer une sauvegarde ou configurer la Ligue</p>
+        </div>
+      </div>
+      <div class="backup-cards-grid">
+        <div class="backup-card">
+          <div class="backup-icon">⚙️</div>
+          <h3>Personnaliser la Ligue</h3>
+          <p>Changez le nom du championnat, le nom du coach et la couleur du thème.</p>
+          <button id="btn-tab-open-settings" class="btn btn-primary">🎨 Modifier la Ligue</button>
+        </div>
+        <div class="backup-card">
+          <div class="backup-icon">📥</div>
+          <h3>Créer une Sauvegarde</h3>
+          <p>Téléchargez l'état actuel de votre ligue sous forme de fichier JSON.</p>
+          <button id="btn-export-json" class="btn btn-primary">⬇️ Exporter en JSON</button>
+        </div>
+        <div class="backup-card">
+          <div class="backup-icon">📤</div>
+          <h3>Charger une Sauvegarde</h3>
+          <p>Restaurez vos données depuis un fichier JSON précédemment sauvegardé.</p>
+          <input type="file" id="input-import-json" accept=".json" class="file-input-hidden">
+          <button id="btn-trigger-import" class="btn btn-secondary">📁 Choisir un fichier JSON</button>
+        </div>
+        <div class="backup-card card-warning">
+          <div class="backup-icon">🔄</div>
+          <h3>Données de Démo</h3>
+          <p>Réinitialisez la base avec un jeu d'essai complet d'élèves.</p>
+          <button id="btn-load-demo" class="btn btn-warning">⚽ Charger la Ligue de Démo</button>
+          <button id="btn-reset-all" class="btn btn-danger btn-sm" style="margin-top: 10px;">⚠️ Effacer tout</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modale : Configurer la Ligue (Titre, Coach, Couleur) -->
+  <div id="modal-settings" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>⚙️ Configuration de la Ligue</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <form id="form-settings" class="modal-body">
+        <div class="form-group">
+          <label for="setting-title">Titre de la Ligue / Classement *</label>
+          <input type="text" id="setting-title" class="input-text" placeholder="Ex: Ligue BTS CIEL 2026, Championnat 3ème B..." required>
+        </div>
+        <div class="form-group">
+          <label for="setting-coach">Nom de l'Enseignant / Coach *</label>
+          <input type="text" id="setting-coach" class="input-text" placeholder="Ex: Coach Dupont, Mme Martin..." required>
+        </div>
+        <div class="form-group">
+          <label for="setting-color">Couleur Principale du Thème</label>
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <input type="color" id="setting-color" value="#00E676" style="width:50px; height:40px; border:none; cursor:pointer; background:none;">
+            <div class="color-presets">
+              <button type="button" class="preset-color-btn" data-color="#00E676" style="background:#00E676;" title="Vert Stade"></button>
+              <button type="button" class="preset-color-btn" data-color="#00E5FF" style="background:#00E5FF;" title="Cyan Néon"></button>
+              <button type="button" class="preset-color-btn" data-color="#A855F7" style="background:#A855F7;" title="Violet Électrique"></button>
+              <button type="button" class="preset-color-btn" data-color="#FFD700" style="background:#FFD700;" title="Or Champion"></button>
+              <button type="button" class="preset-color-btn" data-color="#FF3366" style="background:#FF3366;" title="Rouge Brasier"></button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-cancel">Annuler</button>
+          <button type="submit" class="btn btn-primary">Enregistrer la Configuration</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modale : Ajouter / Éditer Élève -->
+  <div id="modal-student" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-student-title">Ajouter un élève</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <form id="form-student" class="modal-body">
+        <input type="hidden" id="student-edit-id">
+        <div class="form-group">
+          <label for="student-name">Nom complet *</label>
+          <input type="text" id="student-name" class="input-text" placeholder="Ex: Kylian Mbappé" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="student-number">Numéro de Maillot</label>
+            <input type="number" id="student-number" class="input-text" min="1" max="99" value="10">
+          </div>
+          <div class="form-group">
+            <label for="student-role">Poste sur le terrain</label>
+            <select id="student-role" class="input-select">
+              <option value="Attaquant">⚽ Attaquant</option>
+              <option value="Milieu">🧠 Milieu</option>
+              <option value="Défenseur">🛡️ Défenseur</option>
+              <option value="Gardien">🧤 Gardien</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="student-avatar">Avatar</label>
+          <select id="student-avatar" class="input-select">
+            <option value="🦁">🦁 Lion</option>
+            <option value="🦅">🦅 Aigle</option>
+            <option value="🐺">🐺 Loup</option>
+            <option value="⚡">⚡ Éclair</option>
+            <option value="🔥">🔥 Feu</option>
+            <option value="🎯">🎯 Cible</option>
+            <option value="👑">👑 Couronne</option>
+            <option value="🚀">🚀 Fusée</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-cancel">Annuler</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modale : Ajustement Précis des Points (avec Date) -->
+  <div id="modal-points" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Ajuster les Points <span id="modal-points-student-name"></span></h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <form id="form-adjust-points" class="modal-body">
+        <input type="hidden" id="adjust-student-id">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="adjust-delta">Variation (+/-)</label>
+            <input type="number" id="adjust-delta" class="input-text" placeholder="Ex: +2 ou -1" required>
+          </div>
+          <div class="form-group">
+            <label for="adjust-date">Date précise *</label>
+            <input type="date" id="adjust-date" class="input-date" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="adjust-reason">Motif / Commentaire *</label>
+          <input type="text" id="adjust-reason" class="input-text" placeholder="Ex: Retard justifié, Participation..." required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-cancel">Annuler</button>
+          <button type="submit" class="btn btn-primary">Appliquer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
