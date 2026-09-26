@@ -20,14 +20,7 @@ export function renderStudents() {
   container.innerHTML = state.students.map(student => `
     <div class="student-card">
       <div class="student-header">
-        <div class="player-avatar" style="width:50px; height:50px; font-size:1.6rem;">
-          ${student.avatar || '⚽'}
-        </div>
-        <div>
-          <h3 style="font-size:1.1rem;">${escapeHtml(student.name)}</h3>
-          <span class="jersey-badge">N° ${student.jerseyNumber}</span>
-          <span style="font-size:0.75rem; color:var(--text-muted); margin-left:0.3rem;">${escapeHtml(student.role)}</span>
-        </div>
+        <h3 style="font-size:1.1rem;">${escapeHtml(student.name)}</h3>
       </div>
 
       <div class="student-stats">

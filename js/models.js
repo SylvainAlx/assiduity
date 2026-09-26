@@ -13,13 +13,10 @@ export const ATTENDANCE_RULES = {
 /**
  * Fabrique un objet Élève (Joueur)
  */
-export function createStudent(name, jerseyNumber = 10, role = 'Attaquant', avatar = '🦁') {
+export function createStudent(name) {
   return {
     id: 'std_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
     name: name.trim(),
-    jerseyNumber: parseInt(jerseyNumber, 10) || 10,
-    role: role,
-    avatar: avatar,
     points: 0,
     stats: {
       presents: 0,
@@ -58,19 +55,19 @@ export const DEFAULT_LEAGUE_SETTINGS = {
  */
 export function getDemoData() {
   const demoStudents = [
-    { name: 'Kylian Mbappé', jersey: 10, role: 'Attaquant', avatar: '⚡', points: 18, stats: { presents: 6, lateShort: 0, absents: 0, sessionsCount: 6 }, form: ['W','W','W','W','W'] },
-    { name: 'Antoine Griezmann', jersey: 7, role: 'Milieu', avatar: '🎯', points: 16, stats: { presents: 5, lateShort: 1, absents: 0, sessionsCount: 6 }, form: ['W','W','D','W','W'] },
-    { name: 'N\'Golo Kanté', jersey: 13, role: 'Milieu', avatar: '🦁', points: 15, stats: { presents: 5, lateShort: 0, absents: 1, sessionsCount: 6 }, form: ['W','W','W','L','W'] },
-    { name: 'Jules Koundé', jersey: 5, role: 'Défenseur', avatar: '🛡️', points: 13, stats: { presents: 4, lateShort: 1, absents: 1, sessionsCount: 6 }, form: ['W','D','W','L','W'] },
-    { name: 'Mike Maignan', jersey: 1, role: 'Gardien', avatar: '🧤', points: 12, stats: { presents: 4, lateShort: 0, absents: 2, sessionsCount: 6 }, form: ['W','L','W','W','L'] },
-    { name: 'Ousmane Dembélé', jersey: 11, role: 'Attaquant', avatar: '🔥', points: 9, stats: { presents: 2, lateShort: 3, absents: 1, sessionsCount: 6 }, form: ['D','D','W','L','D'] },
-    { name: 'Marcus Thuram', jersey: 9, role: 'Attaquant', avatar: '🦅', points: 7, stats: { presents: 2, lateShort: 1, absents: 3, sessionsCount: 6 }, form: ['L','W','L','D','L'] }
+    { name: 'Kylian Mbappé', points: 18, stats: { presents: 6, lateShort: 0, absents: 0, sessionsCount: 6 }, form: ['W','W','W','W','W'] },
+    { name: 'Antoine Griezmann', points: 16, stats: { presents: 5, lateShort: 1, absents: 0, sessionsCount: 6 }, form: ['W','W','D','W','W'] },
+    { name: 'N\'Golo Kanté', points: 15, stats: { presents: 5, lateShort: 0, absents: 1, sessionsCount: 6 }, form: ['W','W','W','L','W'] },
+    { name: 'Jules Koundé', points: 13, stats: { presents: 4, lateShort: 1, absents: 1, sessionsCount: 6 }, form: ['W','D','W','L','W'] },
+    { name: 'Mike Maignan', points: 12, stats: { presents: 4, lateShort: 0, absents: 2, sessionsCount: 6 }, form: ['W','L','W','W','L'] },
+    { name: 'Ousmane Dembélé', points: 9, stats: { presents: 2, lateShort: 3, absents: 1, sessionsCount: 6 }, form: ['D','D','W','L','D'] },
+    { name: 'Marcus Thuram', points: 7, stats: { presents: 2, lateShort: 1, absents: 3, sessionsCount: 6 }, form: ['L','W','L','D','L'] }
   ];
 
   const today = new Date().toISOString().split('T')[0];
   
   const students = demoStudents.map(ds => {
-    const s = createStudent(ds.name, ds.jersey, ds.role, ds.avatar);
+    const s = createStudent(ds.name);
     s.points = ds.points;
     s.stats = ds.stats;
     s.recentForm = ds.form;

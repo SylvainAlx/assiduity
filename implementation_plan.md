@@ -16,12 +16,12 @@ Application web interactive (HTML/CSS/JS) sous forme de championnat de football 
 ## ⚽ Fonctionnalités Clefs
 
 1. **🏆 Classement Général (Ligue)**
-   - Tableau de classement type championnat (Rang, Avatar/Tête, Nom, Points, Présences, Retards, Absences, Forme des 5 dernières séances).
-   - Zones de classement (Ligue des Champions, Zone Europa, Zone Maintien).
+   - Tableau de classement type championnat (Rang, Nom, Points, Présences, Retards, Absences, Forme des 5 dernières séances).
+   - Mise en évidence du podium (1er à 3e).
 2. **📋 Module "Faire l'Appel" (Séance de cours)**
    - Interface rapide pour valider l'assiduité de toute la classe en 1 clic par élève (+3, +1, 0) avec horodatage de la séance.
 3. **👤 Gestion des Élèves & Personnages**
-   - Ajout d'élève (nom, prénom, avatar/poste de jeu, numéro de maillot).
+   - Ajout d'élève (nom complet uniquement).
    - Fiche individuelle et ajustement précis des points avec choix de la date et commentaire.
 4. **📜 Historique Détaillé & Daté**
    - Journal complet de toutes les attributions de points datées avec filtre par élève.
@@ -40,7 +40,7 @@ c:\Users\alxph\Documents\Code\ESEO\assiduity\
 ├── index.html               # Structure HTML5 sémantique avec onglets et modales (~180 lignes)
 ├── css/
 │   ├── main.css             # Variables CSS, thème sombre moderne (stade/gazon/or), typographie (~180 lignes)
-│   ├── league.css           # Styles spécifiques au classement foot (badges, zones, maillots) (~170 lignes)
+│   ├── league.css           # Styles spécifiques au classement foot et au podium (~170 lignes)
 │   └── components.css       # Modales, formulaires, timeline historique, fiches d'appel (~190 lignes)
 └── js/
     ├── models.js            # Modèles de données (Élève, Historique, Barème) (~80 lignes)

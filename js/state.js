@@ -19,7 +19,7 @@ class AppState {
   init() {
     const saved = loadFromStorage();
     if (saved && Array.isArray(saved.students) && saved.students.length > 0) {
-      this.students = saved.students;
+      this.students = saved.students.map(stripRemovedStudentFields);
       this.history = saved.history || [];
       this.totalSessions = saved.totalSessions || 0;
       this.settings = { ...DEFAULT_LEAGUE_SETTINGS, ...(saved.settings || {}) };
@@ -66,7 +66,7 @@ class AppState {
 
   /** Remplace tout l'état (ex: lors d'un import JSON) */
   replaceState(data) {
-    this.students = data.students || [];
+    this.students = (data.students || []).map(stripRemovedStudentFields);
     this.history = data.history || [];
     this.totalSessions = data.totalSessions || 0;
     this.settings = { ...DEFAULT_LEAGUE_SETTINGS, ...(data.settings || {}) };
@@ -84,21 +84,18 @@ class AppState {
   }
 
   /** Ajoute un nouvel élève */
-  addStudent(name, jersey, role, avatar) {
-    const newStudent = createStudent(name, jersey, role, avatar);
+  addStudent(name) {
+    const newStudent = createStudent(name);
     this.students.push(newStudent);
     this.notify();
     return newStudent;
   }
 
   /** Met à jour les infos d'un élève */
-  updateStudent(id, name, jersey, role, avatar) {
+  updateStudent(id, name) {
     const student = this.students.find(s => s.id === id);
     if (student) {
       student.name = name.trim();
-      student.jerseyNumber = parseInt(jersey, 10);
-      student.role = role;
-      student.avatar = avatar;
       this.notify();
     }
   }
@@ -160,6 +157,12 @@ class AppState {
 
     this.notify();
   }
+}
+
+/** Retire les anciennes informations de personnalisation lors d'un chargement. */
+function stripRemovedStudentFields(student) {
+  const { jerseyNumber, role, avatar, ...cleanStudent } = student;
+  return cleanStudent;
 }
 
 export const state = new AppState();

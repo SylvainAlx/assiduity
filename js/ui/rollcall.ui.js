@@ -27,11 +27,7 @@ export function renderRollCall() {
   container.innerHTML = state.students.map(student => `
     <div class="rollcall-card" data-student-id="${student.id}">
       <div class="rollcall-student-info">
-        <div class="player-avatar">${student.avatar || '⚽'}</div>
-        <div>
-          <strong style="display:block;">${escapeHtml(student.name)}</strong>
-          <span style="font-size:0.75rem; color:var(--text-muted);">N° ${student.jerseyNumber} • ${student.role}</span>
-        </div>
+        <strong style="display:block;">${escapeHtml(student.name)}</strong>
       </div>
       
       <div class="rollcall-options">

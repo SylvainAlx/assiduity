@@ -19,7 +19,7 @@ export function renderLeaderboard() {
   if (sortedStudents.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="10" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+        <td colspan="9" style="text-align: center; padding: 2rem; color: var(--text-muted);">
           ⚽ Aucun élève enregistré. Ajoutez un élève ou chargez les données de démo !
         </td>
       </tr>`;
@@ -29,11 +29,8 @@ export function renderLeaderboard() {
   tbody.innerHTML = sortedStudents.map((student, index) => {
     const rank = index + 1;
     
-    // Détermination des zones de ligue
-    let zoneClass = '';
-    if (rank <= 3) zoneClass = 'row-champion';
-    else if (rank <= 6) zoneClass = 'row-europa';
-    else if (student.points < 10) zoneClass = 'row-maintenance';
+    // Mise en évidence du podium uniquement
+    const zoneClass = rank <= 3 ? 'row-champion' : '';
 
     // Forme des 5 derniers matchs (W/D/L)
     const formHtml = (student.recentForm || []).slice(0, 5).map(code => {
@@ -53,16 +50,7 @@ export function renderLeaderboard() {
           <span class="rank-badge ${rankBadgeClass}">${rank}</span>
         </td>
         <td>
-          <div class="player-cell">
-            <div class="player-avatar">${student.avatar || '⚽'}</div>
-            <div class="player-info">
-              <span class="player-name">${escapeHtml(student.name)}</span>
-            </div>
-          </div>
-        </td>
-        <td>
-          <span class="jersey-badge">N° ${student.jerseyNumber}</span>
-          <span style="font-size:0.75rem; color:var(--text-muted); display:block;">${escapeHtml(student.role)}</span>
+          <span class="player-name">${escapeHtml(student.name)}</span>
         </td>
         <td><strong>${student.stats.sessionsCount}</strong> j.</td>
         <td><span style="color:var(--accent-green);">🟢 ${student.stats.presents}</span></td>

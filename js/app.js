@@ -136,12 +136,9 @@ function setupModalEvents() {
     e.preventDefault();
     const editId = document.getElementById('student-edit-id').value;
     const name = document.getElementById('student-name').value;
-    const jersey = document.getElementById('student-number').value;
-    const role = document.getElementById('student-role').value;
-    const avatar = document.getElementById('student-avatar').value;
 
-    if (editId) state.updateStudent(editId, name, jersey, role, avatar);
-    else state.addStudent(name, jersey, role, avatar);
+    if (editId) state.updateStudent(editId, name);
+    else state.addStudent(name);
 
     modalStudent.classList.add('hidden');
   });
@@ -248,9 +245,6 @@ function setupDynamicDelegationEvents() {
         document.getElementById('modal-student-title').textContent = `Éditer ${student.name}`;
         document.getElementById('student-edit-id').value = student.id;
         document.getElementById('student-name').value = student.name;
-        document.getElementById('student-number').value = student.jerseyNumber;
-        document.getElementById('student-role').value = student.role;
-        document.getElementById('student-avatar').value = student.avatar;
         document.getElementById('modal-student').classList.remove('hidden');
       }
       return;
