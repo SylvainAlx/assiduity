@@ -31,7 +31,7 @@ export function createStudent(name) {
 /**
  * Fabrique une entrée d'Historique datée
  */
-export function createHistoryEntry(studentId, studentName, dateStr, delta, reason, type = 'manual') {
+export function createHistoryEntry(studentId, studentName, dateStr, delta, reason, type = 'manual', metadata = {}) {
   return {
     id: 'hist_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
     studentId: studentId,
@@ -40,7 +40,9 @@ export function createHistoryEntry(studentId, studentName, dateStr, delta, reaso
     timestamp: new Date().toISOString(),
     delta: parseInt(delta, 10),
     reason: reason,
-    type: type // 'rollcall' (appel) ou 'manual' (ajustement précis)
+    type: type, // 'rollcall' (appel) ou 'manual' (ajustement précis)
+    ...(metadata.status ? { status: metadata.status } : {}),
+    ...(metadata.sessionId ? { sessionId: metadata.sessionId } : {})
   };
 }
 

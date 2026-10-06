@@ -19,7 +19,7 @@ export function renderLeaderboard() {
   if (sortedStudents.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="9" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+        <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-muted);">
           ⚽ Aucun élève enregistré. Ajoutez un élève ou chargez les données de démo !
         </td>
       </tr>`;
@@ -31,12 +31,6 @@ export function renderLeaderboard() {
     
     // Mise en évidence du podium uniquement
     const zoneClass = rank <= 3 ? 'row-champion' : '';
-
-    // Forme des 5 derniers matchs (W/D/L)
-    const formHtml = (student.recentForm || []).slice(0, 5).map(code => {
-      const cls = code.toLowerCase();
-      return `<span class="form-pill ${cls}" title="${code === 'W' ? 'Présent (+3)' : code === 'D' ? 'Retard (+1)' : 'Absent (0)'}">${code}</span>`;
-    }).join('');
 
     // Badge du rang
     let rankBadgeClass = 'rank-other';
@@ -56,11 +50,6 @@ export function renderLeaderboard() {
         <td><span style="color:var(--accent-green);">🟢 ${student.stats.presents}</span></td>
         <td><span style="color:var(--accent-yellow);">🟡 ${student.stats.lateShort}</span></td>
         <td><span style="color:var(--accent-red);">🔴 ${student.stats.absents}</span></td>
-        <td>
-          <div class="form-streak">
-            ${formHtml || '<span style="font-size:0.75rem; color:var(--text-muted);">-</span>'}
-          </div>
-        </td>
         <td>
           <span class="points-highlight">${student.points} pts</span>
         </td>

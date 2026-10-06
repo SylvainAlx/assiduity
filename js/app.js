@@ -91,6 +91,7 @@ function setupModalEvents() {
   const modalStudent = document.getElementById('modal-student');
   const modalPoints = document.getElementById('modal-points');
   const modalSettings = document.getElementById('modal-settings');
+  const modalEditRollcall = document.getElementById('modal-edit-rollcall');
 
   // Modale Configuration de la Ligue
   const openSettings = () => {
@@ -157,12 +158,24 @@ function setupModalEvents() {
     }
   });
 
+  // Correction d'un appel déjà enregistré
+  document.getElementById('form-edit-rollcall')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const historyId = document.getElementById('edit-rollcall-id').value;
+    const status = document.getElementById('edit-rollcall-status').value;
+
+    if (historyId && state.editRollCall(historyId, status)) {
+      modalEditRollcall.classList.add('hidden');
+    }
+  });
+
   // Fermeture des modales
   document.querySelectorAll('.modal-close, .modal-cancel').forEach(btn => {
     btn.addEventListener('click', () => {
       modalStudent.classList.add('hidden');
       modalPoints.classList.add('hidden');
       modalSettings.classList.add('hidden');
+      modalEditRollcall.classList.add('hidden');
     });
   });
 }
@@ -250,6 +263,22 @@ function setupDynamicDelegationEvents() {
       return;
     }
 
+    const btnEditRollcall = target.closest('.btn-edit-rollcall');
+    if (btnEditRollcall) {
+      const historyId = btnEditRollcall.getAttribute('data-id');
+      const entry = state.history.find(item => item.id === historyId && item.type === 'rollcall');
+      const student = entry ? state.students.find(item => item.id === entry.studentId) : null;
+
+      if (entry && student) {
+        document.getElementById('edit-rollcall-id').value = entry.id;
+        document.getElementById('edit-rollcall-student').textContent = student.name;
+        document.getElementById('edit-rollcall-date').textContent = formatDateFR(entry.date);
+        document.getElementById('edit-rollcall-status').value = getRollCallStatusForUi(entry);
+        document.getElementById('modal-edit-rollcall').classList.remove('hidden');
+      }
+      return;
+    }
+
     const btnDelete = target.closest('.btn-delete-student');
     if (btnDelete) {
       const studentId = btnDelete.getAttribute('data-id');
@@ -261,4 +290,17 @@ function setupDynamicDelegationEvents() {
   });
 
   document.getElementById('filter-history-student')?.addEventListener('change', () => renderHistory());
+}
+
+function getRollCallStatusForUi(entry) {
+  if (['present', 'late_short', 'absent'].includes(entry.status)) return entry.status;
+  if (Number(entry.delta) === 3) return 'present';
+  if (Number(entry.delta) === 1) return 'late_short';
+  return 'absent';
+}
+
+function formatDateFR(dateStr) {
+  if (!dateStr) return '';
+  const parts = dateStr.split('-');
+  return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : dateStr;
 }

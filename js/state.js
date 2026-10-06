@@ -122,6 +122,7 @@ class AppState {
   /** Enregistre une session d'appel complète */
   processRollCall(dateStr, records) {
     this.totalSessions += 1;
+    const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
 
     records.forEach(rec => {
       const student = this.students.find(s => s.id === rec.studentId);
@@ -150,13 +151,90 @@ class AppState {
         dateStr,
         rule.points,
         `Séance du ${dateStr} : ${rule.label} (+${rule.points} pt${rule.points > 1 ? 's' : ''})`,
-        'rollcall'
+        'rollcall',
+        { status: rec.status, sessionId }
       );
       this.history.unshift(entry);
     });
 
     this.notify();
   }
+
+  /** Corrige le statut d'un appel déjà enregistré. */
+  editRollCall(historyId, newStatus) {
+    const entry = this.history.find(item => item.id === historyId && item.type === 'rollcall');
+    if (!entry) return false;
+
+    const student = this.students.find(item => item.id === entry.studentId);
+    if (!student) return false;
+
+    const oldStatus = getRollCallStatus(entry);
+    const normalizedStatus = normalizeRollCallStatus(newStatus);
+    if (!normalizedStatus) return false;
+
+    const oldRule = ATTENDANCE_RULES[statusToRuleKey(oldStatus)];
+    const newRule = ATTENDANCE_RULES[statusToRuleKey(normalizedStatus)];
+
+    student.points = Math.max(0, student.points + newRule.points - oldRule.points);
+    decrementAttendanceStat(student, oldStatus);
+    incrementAttendanceStat(student, normalizedStatus);
+
+    entry.status = normalizedStatus;
+    entry.delta = newRule.points;
+    entry.reason = `Séance du ${entry.date} : ${newRule.label} (+${newRule.points} pt${newRule.points > 1 ? 's' : ''})`;
+    entry.editedAt = new Date().toISOString();
+    entry.studentName = student.name;
+
+    // Les anciennes démos peuvent ne contenir qu'une partie de l'historique.
+    // Dans ce cas, on conserve leur forme existante plutôt que de la reconstruire incomplètement.
+    const rollcallEntries = this.history.filter(item => item.type === 'rollcall' && item.studentId === student.id);
+    if (rollcallEntries.length >= student.stats.sessionsCount) {
+      student.recentForm = rollcallEntries
+        .sort(compareHistoryEntriesByDateDesc)
+        .slice(0, 5)
+        .map(item => ATTENDANCE_RULES[statusToRuleKey(getRollCallStatus(item))].code);
+    }
+
+    this.notify();
+    return true;
+  }
+}
+
+function normalizeRollCallStatus(status) {
+  return ['present', 'late_short', 'absent'].includes(status) ? status : null;
+}
+
+function statusToRuleKey(status) {
+  if (status === 'late_short') return 'LATE_SHORT';
+  if (status === 'absent') return 'ABSENT';
+  return 'PRESENT';
+}
+
+function getRollCallStatus(entry) {
+  if (normalizeRollCallStatus(entry.status)) return entry.status;
+  if (Number(entry.delta) === ATTENDANCE_RULES.PRESENT.points) return 'present';
+  if (Number(entry.delta) === ATTENDANCE_RULES.LATE_SHORT.points) return 'late_short';
+  return 'absent';
+}
+
+function decrementAttendanceStat(student, status) {
+  student.stats.sessionsCount = Math.max(0, student.stats.sessionsCount - 1);
+  if (status === 'present') student.stats.presents = Math.max(0, student.stats.presents - 1);
+  if (status === 'late_short') student.stats.lateShort = Math.max(0, student.stats.lateShort - 1);
+  if (status === 'absent') student.stats.absents = Math.max(0, student.stats.absents - 1);
+}
+
+function incrementAttendanceStat(student, status) {
+  student.stats.sessionsCount += 1;
+  if (status === 'present') student.stats.presents += 1;
+  if (status === 'late_short') student.stats.lateShort += 1;
+  if (status === 'absent') student.stats.absents += 1;
+}
+
+function compareHistoryEntriesByDateDesc(a, b) {
+  const dateComparison = String(b.date || '').localeCompare(String(a.date || ''));
+  if (dateComparison !== 0) return dateComparison;
+  return String(b.timestamp || '').localeCompare(String(a.timestamp || ''));
 }
 
 /** Retire les anciennes informations de personnalisation lors d'un chargement. */

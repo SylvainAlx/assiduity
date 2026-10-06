@@ -59,6 +59,10 @@ export function renderHistory() {
           <span class="history-delta" style="color: ${item.delta > 0 ? 'var(--accent-green)' : item.delta < 0 ? 'var(--accent-red)' : 'var(--text-muted)'};">
             ${deltaDisplay} pt${Math.abs(item.delta) > 1 ? 's' : ''}
           </span>
+          ${item.type === 'rollcall' ? `
+            <button class="btn btn-secondary btn-edit-rollcall" data-id="${item.id}" title="Corriger cet appel">
+              ✏️ Modifier
+            </button>` : ''}
         </div>
       </div>
     `;

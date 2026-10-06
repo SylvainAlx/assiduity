@@ -76,7 +76,6 @@
               <th>🟢 Prés.</th>
               <th>🟡 Ret.</th>
               <th>🔴 Abs.</th>
-              <th>Forme</th>
               <th>Points</th>
               <th>Actions</th>
             </tr>
@@ -121,7 +120,7 @@
       <div class="section-header">
         <div>
           <h2>📜 Historique Chronologique & Datation</h2>
-          <p>Journal complet de tous les évènements d'assiduité et ajustements manuels</p>
+          <p>Journal complet des évènements d'assiduité et ajustements manuels. Les appels peuvent être corrigés.</p>
         </div>
         <div class="history-filter">
           <select id="filter-history-student" class="input-select">
@@ -256,6 +255,39 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary modal-cancel">Annuler</button>
           <button type="submit" class="btn btn-primary">Appliquer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modale : Corriger un appel enregistré -->
+  <div id="modal-edit-rollcall" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>✏️ Corriger un appel</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <form id="form-edit-rollcall" class="modal-body">
+        <input type="hidden" id="edit-rollcall-id">
+        <div class="form-group">
+          <label>Élève</label>
+          <strong id="edit-rollcall-student"></strong>
+        </div>
+        <div class="form-group">
+          <label>Date de l'appel</label>
+          <span id="edit-rollcall-date" class="history-date"></span>
+        </div>
+        <div class="form-group">
+          <label for="edit-rollcall-status">Statut *</label>
+          <select id="edit-rollcall-status" class="input-select" required>
+            <option value="present">🟢 Présent (+3 pts)</option>
+            <option value="late_short">🟡 Retard de moins de 5 min (+1 pt)</option>
+            <option value="absent">🔴 Absent (0 pt)</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modal-cancel">Annuler</button>
+          <button type="submit" class="btn btn-primary">Enregistrer la correction</button>
         </div>
       </form>
     </div>
