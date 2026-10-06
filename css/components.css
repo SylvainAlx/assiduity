@@ -132,6 +132,96 @@
   gap: 0.75rem;
 }
 
+.history-day {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.history-day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.2rem;
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  list-style: none;
+}
+
+.history-day-header::-webkit-details-marker {
+  display: none;
+}
+
+.history-day-header::marker {
+  content: '';
+}
+
+.history-day-header::after {
+  content: '▸';
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  transition: transform 0.2s ease;
+}
+
+.history-day[open] .history-day-header {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.history-day[open] .history-day-header::after {
+  transform: rotate(90deg);
+}
+
+.history-day-header h3 {
+  font-size: 1rem;
+}
+
+.history-day-count {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.history-call-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.history-call-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.8rem 1.2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.history-call-student,
+.history-call-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.history-status {
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.history-status.present,
+.history-delta.present { color: var(--accent-green); }
+.history-status.late,
+.history-delta.late { color: var(--accent-yellow); }
+.history-status.absent,
+.history-delta.absent { color: var(--accent-red); }
+
+.history-call-actions .btn {
+  padding: 0.45rem 0.75rem;
+  font-size: 0.78rem;
+}
+
 .history-item {
   background: var(--bg-card);
   border-left: 4px solid var(--accent-blue);
@@ -142,6 +232,10 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.history-day > .history-item {
+  margin: 0.75rem;
 }
 
 .history-item.positive { border-left-color: var(--accent-green); }
